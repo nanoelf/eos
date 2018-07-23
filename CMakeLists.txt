@@ -11,6 +11,7 @@ include( GNUInstallDirs )
 include( VersionMacros )
 include( SetupTargetMacros )
 include( InstallDirectoryPermissions )
+include( MASSigning )
 
 set( BLOCKCHAIN_NAME "EOSIO" )
 set( CMAKE_CXX_STANDARD 14 )
@@ -18,8 +19,8 @@ set( CMAKE_CXX_EXTENSIONS ON )
 set( CXX_STANDARD_REQUIRED ON)
 
 set(VERSION_MAJOR 1)
-set(VERSION_MINOR 0)
-set(VERSION_PATCH 1)
+set(VERSION_MINOR 1)
+set(VERSION_PATCH 0)
 
 set( CLI_CLIENT_EXECUTABLE_NAME cleos )
 set( GUI_CLIENT_EXECUTABLE_NAME eosio )

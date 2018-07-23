@@ -54,7 +54,7 @@ macro(compile_wast)
     endif()
 
     set(WASM_COMMAND ${WASM_CLANG} -emit-llvm -O3 ${STDFLAG} --target=wasm32 -ffreestanding
-              -nostdlib -nostdlibinc -fno-threadsafe-statics -fno-rtti -fno-exceptions  
+              -nostdlib -nostdlibinc -DBOOST_DISABLE_ASSERTS -DBOOST_EXCEPTION_DISABLE -fno-threadsafe-statics -fno-rtti -fno-exceptions
               -c ${infile} -o ${outfile}.bc
     )
     if (${ARG_NOWARNINGS})
@@ -71,10 +71,6 @@ macro(compile_wast)
     if ("${ARG_SYSTEM_INCLUDE_FOLDERS}" STREQUAL "")
        set (ARG_SYSTEM_INCLUDE_FOLDERS ${DEFAULT_SYSTEM_INCLUDE_FOLDERS})
     endif()
-    foreach(folder ${ARG_SYSTEM_INCLUDE_FOLDERS})
-       list(APPEND WASM_COMMAND -isystem ${folder})
-    endforeach()
-
     foreach(folder ${ARG_SYSTEM_INCLUDE_FOLDERS})
        list(APPEND WASM_COMMAND -isystem ${folder})
     endforeach()
@@ -201,7 +197,11 @@ macro(add_wast_executable)
   set(extra_target_dependency)
 
   # For CLion code insight
-  include_directories(..)
+  foreach(folder ${ARG_INCLUDE_FOLDERS})
+    include_directories(${folder})
+  endforeach()
+  include_directories(${Boost_INCLUDE_DIR})
+
   if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${target}.hpp)
     set(HEADER_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${target}.hpp)
   endif()
